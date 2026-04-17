@@ -58,7 +58,8 @@ const Invoice = () => {
               <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
                 Order ID: {order.id.slice(-8).toUpperCase()}<br />
                 Date: {new Date(order.date).toLocaleDateString()}<br />
-                Time: {new Date(order.date).toLocaleTimeString()}
+                Time: {new Date(order.date).toLocaleTimeString()}<br />
+                Status: <span style={{ color: 'var(--success)', fontWeight: '700' }}>PAID</span>
               </p>
             </div>
           </div>

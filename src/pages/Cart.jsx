@@ -51,32 +51,13 @@ const Cart = () => {
     }
     
     setLoading(true);
-    try {
-      const orderData = {
+    navigate('/payment', { 
+      state: { 
         total: finalTotal,
-        items: cartItems.map(item => ({
-          ...item,
-          appliedPrice: item.quantity > 6 ? item.price - 1 : item.price
-        })),
+        items: cartItems,
         discount: totalDiscount
-      };
-      
-      const newOrder = await addOrder(orderData);
-      localStorage.removeItem(`cart_${user.id}`);
-      setCartItems([]);
-      
-      localStorage.setItem('last_order', JSON.stringify({
-        ...newOrder,
-        date: newOrder.created_at,
-        enterprise: 'Murali Krishna Enterprises',
-        discount: totalDiscount
-      }));
-      navigate('/invoice');
-    } catch (err) {
-      alert('Checkout failed: ' + err.message);
-    } finally {
-      setLoading(false);
-    }
+      } 
+    });
   };
 
   if (cartItems.length === 0) {

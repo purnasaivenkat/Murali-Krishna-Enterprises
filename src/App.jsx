@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Cart from './pages/Cart';
 import Invoice from './pages/Invoice';
 import Verify from './pages/Verify';
+import Payment from './pages/Payment';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -28,6 +29,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/verify" element={<Verify />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/catalog" element={<Catalog />} />
             <Route 
               path="/dashboard" 

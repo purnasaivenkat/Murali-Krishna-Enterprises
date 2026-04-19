@@ -131,13 +131,43 @@ const Dashboard = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {orders.length > 0 ? (
               orders.map((order) => (
-                <div key={order.id} className="glass" style={{ padding: '1rem 1.5rem', borderRadius: '15px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                <div key={order.id} className="glass" style={{ padding: '1.5rem', borderRadius: '15px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>
                     <span style={{ fontWeight: '600' }}>Order #{order.id.slice(-6)}</span>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{new Date(order.created_at).toLocaleDateString()}</span>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{new Date(order.created_at).toLocaleDateString()}</span>
                   </div>
-                  <div style={{ fontSize: '0.9rem' }}>
-                    {order.items.length} items • Total: <span style={{ fontWeight: '700' }}>₹{order.total}</span>
+                  
+                  {/* Detailed Items List */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1rem' }}>
+                    {order.items && order.items.map((item, index) => (
+                      <div key={index} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                        <div style={{ width: '60px', height: '60px', flexShrink: 0, backgroundColor: 'white', borderRadius: '8px', overflow: 'hidden', padding: '5px', border: '1px solid var(--border)' }}>
+                          <img 
+                            src={item.image || '/images/thums_up_real.png'} 
+                            alt={item.name} 
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                            onError={(e) => { e.target.onerror = null; e.target.src = '/images/thums_up_real.png'; }}
+                          />
+                        </div>
+                        <div style={{ flexGrow: 1 }}>
+                          <h5 style={{ margin: 0, fontSize: '1rem' }}>{item.name}</h5>
+                          <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                            {item.brand} • {item.category}
+                          </div>
+                          <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                            Qty: {item.quantity} x ₹{item.price}
+                          </div>
+                        </div>
+                        <div style={{ fontWeight: '700' }}>
+                          ₹{item.price * item.quantity}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+                    <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{order.items?.length || 0} items</span>
+                    <span style={{ fontWeight: '700', fontSize: '1.2rem', color: 'var(--primary)' }}>Total: ₹{order.total}</span>
                   </div>
                 </div>
               ))

@@ -78,9 +78,19 @@ const Invoice = () => {
               <tbody>
                 {order.items.map((item, idx) => (
                   <tr key={idx} style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '1rem 0' }}>
-                      <span style={{ fontWeight: '600' }}>{item.name}</span><br />
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{item.category}</span>
+                    <td style={{ padding: '1rem 0', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <div style={{ width: '40px', height: '40px', backgroundColor: 'var(--theme-bg)', borderRadius: '6px', padding: '4px', border: '1px solid var(--border)' }}>
+                        <img 
+                          src={item.image || '/images/thums_up_real.png'} 
+                          alt={item.name} 
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                          onError={(e) => { e.target.onerror = null; e.target.src = '/images/thums_up_real.png'; }}
+                        />
+                      </div>
+                      <div>
+                        <span style={{ fontWeight: '600' }}>{item.name}</span><br />
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{item.category}</span>
+                      </div>
                     </td>
                     <td style={{ textAlign: 'center', padding: '1rem 0' }}>{item.quantity}</td>
                     <td style={{ textAlign: 'right', padding: '1rem 0' }}>₹{item.price}</td>

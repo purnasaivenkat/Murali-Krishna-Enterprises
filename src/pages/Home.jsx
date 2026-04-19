@@ -1,51 +1,71 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Beer, ShieldCheck, ShoppingBag, Zap } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
+import { products } from '../data/products';
 
 const Home = () => {
   return (
-    <div className="container">
-      <header style={{ padding: '80px 0', textAlign: 'center' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 style={{ fontSize: '4rem', fontWeight: '900', background: 'linear-gradient(to right, var(--primary), var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Murali Krishna Enterprises
-          </h1>
-          <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '700px', margin: '0 auto 2rem' }}>
-            Your premium destination for authentic soft drinks including Thums Up, Sprite, Maaza, Limca, and Coca-Cola tins. Refreshment, delivered with excellence.
+    <div style={{ backgroundColor: 'var(--theme-bg)', minHeight: '100vh', paddingBottom: '60px' }}>
+      
+      {/* Classic Hero Section */}
+      <div className="hero-classic">
+        <div className="hero-text">
+          <h1>Premium Beverages<br/><span>Delivered Fresh.</span></h1>
+          <p>
+            Experience the authentic taste of your favorite soft drinks. 
+            From the strong thunder of Thums Up to the clear refreshment of Sprite, 
+            Murali Krishna Enterprises brings the best to your doorstep.
           </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <Link to="/catalog" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
-              Explore Catalog <ShoppingBag size={20} />
-            </Link>
-            <Link to="/signup" className="btn btn-secondary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
-              Join Now <Zap size={20} />
+          <div style={{ display: 'flex', gap: '15px' }}>
+            <Link to="/catalog" className="btn-add" style={{ padding: '15px 30px', fontSize: '1.1rem' }}>
+              Shop Catalog
             </Link>
           </div>
-        </motion.div>
-      </header>
+        </div>
+        <div className="hero-visual">
+          {/* Main hero image bouncing/floating */}
+          <img src="/images/thums_up_real.png" alt="Thums Up" className="hero-image-main" />
+        </div>
+      </div>
 
-      <section style={{ padding: '60px 0', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-        <div className="glass" style={{ padding: '2rem', borderRadius: '24px' }}>
-          <ShieldCheck size={40} color="var(--accent)" style={{ marginBottom: '1rem' }} />
-          <h3>Secure Platform</h3>
-          <p>Advanced authentication to keep your business data and orders safe and private.</p>
+      {/* 10 Products Grid */}
+      <div className="container" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px', marginTop: '60px' }}>
+          <h2 style={{ fontSize: '2.5rem', color: 'var(--primary)', marginBottom: '10px' }}>Our Collection</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Explore our handpicked selection of refreshing beverages.</p>
         </div>
-        <div className="glass" style={{ padding: '2rem', borderRadius: '24px' }}>
-          <Beer size={40} color="var(--accent)" style={{ marginBottom: '1rem' }} />
-          <h3>Market Favorites</h3>
-          <p>Access the complete range of Thums Up, Sprite, Maaza, and Coca-Cola varieties in convenient tins.</p>
+
+        <div className="products-classic-grid">
+          {products.map((product) => (
+            <div key={product.id} className="product-card-classic">
+              <div className="product-image-container">
+                <img src={product.image} alt={product.name} className="product-img-classic" />
+              </div>
+              <div className="product-brand">{product.brand} • {product.category}</div>
+              <h3 className="product-title">{product.name}</h3>
+              <p className="product-desc">{product.description}</p>
+              
+              <div className="product-footer">
+                <div className="product-price-tag">₹{product.price}</div>
+                <button className="btn-add" onClick={() => {
+                  const cart = JSON.parse(localStorage.getItem('cart_guest') || '[]');
+                  const existing = cart.find(item => item.id === product.id);
+                  if (existing) {
+                    existing.quantity += 1;
+                  } else {
+                    cart.push({ ...product, quantity: 1 });
+                  }
+                  localStorage.setItem('cart_guest', JSON.stringify(cart));
+                  alert(`${product.name} added to cart!`);
+                  window.dispatchEvent(new Event('storage')); // Trigger update if possible
+                }}>
+                  <ShoppingCart size={18} /> Add
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="glass" style={{ padding: '2rem', borderRadius: '24px' }}>
-          <ShoppingBag size={40} color="var(--accent)" style={{ marginBottom: '1rem' }} />
-          <h3>Custom Inventory</h3>
-          <p>Add and manage your own unique soft drink items alongside market varieties.</p>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

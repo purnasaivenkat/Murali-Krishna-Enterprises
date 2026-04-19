@@ -65,9 +65,34 @@ const Payment = () => {
         <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Secure <span>Checkout</span></h2>
         
         <div className="glass" style={{ padding: '2.5rem', borderRadius: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '16px' }}>
-            <span style={{ fontWeight: '600' }}>Order Total</span>
-            <span style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--accent)' }}>₹{total.toFixed(2)}</span>
+          {/* Ordered Items Summary */}
+          <div style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {items && items.map((item, index) => (
+              <div key={index} style={{ display: 'flex', gap: '1rem', alignItems: 'center', padding: '1rem', background: 'var(--theme-bg)', borderRadius: '12px' }}>
+                <div style={{ width: '50px', height: '50px', flexShrink: 0, backgroundColor: 'white', borderRadius: '8px', overflow: 'hidden', padding: '4px', border: '1px solid var(--border)' }}>
+                  <img 
+                    src={item.image || '/images/thums_up_real.png'} 
+                    alt={item.name} 
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    onError={(e) => { e.target.onerror = null; e.target.src = '/images/thums_up_real.png'; }}
+                  />
+                </div>
+                <div style={{ flexGrow: 1 }}>
+                  <h5 style={{ margin: 0, fontSize: '0.95rem' }}>{item.name}</h5>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    Qty: {item.quantity} x ₹{item.price}
+                  </div>
+                </div>
+                <div style={{ fontWeight: '700', fontSize: '0.95rem' }}>
+                  ₹{item.price * item.quantity}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', padding: '1.5rem', background: 'var(--theme-bg)', borderRadius: '16px', border: '1px solid var(--border)' }}>
+            <span style={{ fontWeight: '600', fontSize: '1.2rem' }}>Order Total</span>
+            <span style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--primary)' }}>₹{total.toFixed(2)}</span>
           </div>
 
           <form onSubmit={handlePayment}>
